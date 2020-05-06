@@ -34,7 +34,7 @@ parser.add_argument('-j', '--workers', default=40, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
 args = parser.parse_args()
 
-CLASSES = 1000
+CLASSES = 10
 
 if not os.path.exists('log'):
     os.mkdir('log')
