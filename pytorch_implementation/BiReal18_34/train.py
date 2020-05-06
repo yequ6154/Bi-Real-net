@@ -26,7 +26,7 @@ parser.add_argument('--epochs', type=int, default=256, help='num of training epo
 parser.add_argument('--learning_rate', type=float, default=0.001, help='init learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
 parser.add_argument('--weight_decay', type=float, default=0, help='weight decay')
-parser.add_argument('--save', type=str, default='./models', help='path for saving trained models')
+parser.add_argument('--save', type=str, default='/content/drive/My Drive/models', help='path for saving trained models')
 parser.add_argument('--data', metavar='DIR', help='path to dataset')
 parser.add_argument('--label_smooth', type=float, default=0.1, help='label smoothing')
 parser.add_argument('-j', '--workers', default=40, type=int, metavar='N',
@@ -95,8 +95,7 @@ def main():
         scheduler.step()
 
     # load training data
-    traindir = os.path.join(args.data, 'train')
-    valdir = os.path.join(args.data, 'val')
+    
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
@@ -110,17 +109,14 @@ def main():
         transforms.ToTensor(),
         normalize])
 
-    train_dataset = datasets.ImageFolder(
-        traindir,
-        transform=train_transforms)
-
+    train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=train_transforms) #训练数据集
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True)
 
     # load validation data
     val_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(valdir, transforms.Compose([
+        torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
