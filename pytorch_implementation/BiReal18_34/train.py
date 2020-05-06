@@ -4,11 +4,10 @@ import shutil
 import numpy as np
 import time, datetime
 import torch
+import torchvision
 import random
 import logging
 import argparse
-import torch
-import torchvision
 import torch.nn as nn
 import torch.utils
 import torch.backends.cudnn as cudnn
@@ -48,8 +47,7 @@ fh.setFormatter(logging.Formatter(log_format))
 logging.getLogger().addHandler(fh)
 
 def main():
-    if not torch.cuda.is_available():
-        sys.exit(1)
+    
     start_t = time.time()
 
     cudnn.benchmark = True
@@ -98,6 +96,7 @@ def main():
 
     # load training data
     
+    
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
@@ -111,6 +110,7 @@ def main():
         transforms.ToTensor(),
         normalize])
 
+    
     train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=train_transforms) #训练数据集
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True,
@@ -126,7 +126,8 @@ def main():
         ])),
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
-
+   
+       
     # train the model
     epoch = start_epoch
     while epoch < args.epochs:
