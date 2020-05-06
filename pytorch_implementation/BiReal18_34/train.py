@@ -7,6 +7,8 @@ import torch
 import random
 import logging
 import argparse
+import torch
+import torchvision
 import torch.nn as nn
 import torch.utils
 import torch.backends.cudnn as cudnn
